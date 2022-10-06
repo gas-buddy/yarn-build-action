@@ -32,13 +32,15 @@ runs:
       env:
         NPM_AUTH_TOKEN: ${{inputs.npm-token}}
 
-    - run: npm run lint
+    - run: yarn install --immutable
+
+    - run: yarn lint
       shell: bash
       if: ${{ inputs.skip-lint != 'true' }}
 
-    - run: npm run build
+    - run: yarn build
       shell: bash
 
-    - run: npm run ci-test
+    - run: yarn test
       shell: bash
       if: ${{ inputs.skip-test != 'true' }}
