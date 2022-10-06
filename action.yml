@@ -44,3 +44,5 @@ runs:
     - run: yarn test
       shell: bash
       if: ${{ inputs.skip-test != 'true' }}
+      env:
+        CI: true
