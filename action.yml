@@ -31,7 +31,7 @@ runs:
         yarn config set npmScopes.gasbuddy.npmRegistryServer "https://registry.npmjs.org"
         yarn config set npmScopes.gasbuddy.npmAlwaysAuth true
         yarn config set npmScopes.gasbuddy.npmAuthToken $NPM_AUTH_TOKEN
-      if: "${{ inputs.npm_token != '' }}"
+      if: "${{ inputs.npm-token != '' }}"
       env:
         NPM_AUTH_TOKEN: ${{inputs.npm-token}}
 
