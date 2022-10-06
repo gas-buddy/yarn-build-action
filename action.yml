@@ -26,6 +26,7 @@ runs:
         cache: 'yarn'
 
     - name: Setup .yarnrc.yml
+      shell: bash
       run: |
         yarn config set npmScopes.gasbuddy.npmRegistryServer "https://registry.npmjs.org"
         yarn config set npmScopes.gasbuddy.npmAlwaysAuth true
@@ -34,6 +35,7 @@ runs:
         NPM_AUTH_TOKEN: ${{inputs.npm-token}}
 
     - run: yarn install --immutable
+      shell: bash
 
     - run: yarn lint
       shell: bash
