@@ -24,6 +24,8 @@ runs:
       with:
         node-version: 18.x
         cache: 'yarn'
+        always-auth: true
+        registry-url: 'https://registry.npmjs.org'
 
     - name: Setup .yarnrc.yml
       shell: bash
