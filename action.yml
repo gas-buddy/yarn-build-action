@@ -16,6 +16,11 @@ inputs:
     required: false
     default: false
 
+  ci-setup:
+    description: "Call yarn ci-setup before building and running tests (and after install)"
+    required: false
+    default: false
+
 runs:
   using: "composite"
   steps:
@@ -43,6 +48,10 @@ runs:
     - run: yarn lint
       shell: bash
       if: ${{ inputs.skip-lint != 'true' }}
+
+    - run: yarn ci-setup
+      shell: bash
+      if: ${{ inputs.ci-setup == 'true' }}
 
     - run: yarn build
       shell: bash
