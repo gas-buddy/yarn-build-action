@@ -45,16 +45,16 @@ runs:
     - run: yarn install --immutable
       shell: bash
 
-    - run: yarn lint
-      shell: bash
-      if: ${{ inputs.skip-lint != 'true' }}
-
     - run: yarn ci-setup
       shell: bash
       if: ${{ inputs.ci-setup == 'true' }}
 
     - run: yarn build
       shell: bash
+
+    - run: yarn lint
+      shell: bash
+      if: ${{ inputs.skip-lint != 'true' }}
 
     - run: yarn test
       shell: bash
