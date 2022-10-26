@@ -61,4 +61,5 @@ runs:
       if: ${{ inputs.skip-test != 'true' }}
       env:
         NODE_ENV: test
-        CI: true
+        CI: "true"
+        __NEXT_TEST_MODE: jest
