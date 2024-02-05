@@ -6,6 +6,16 @@ inputs:
     description: "npm credentials, most useful for private repositories"
     required: true
 
+  node-version:
+    description: "Node.js version to use for CI"
+    required: false
+    default: 18.x
+
+  node-version-file:
+    description: "specify if you want to use a .nvmrc file to determine Node.js version in setup"
+    required: false
+    default: ''
+
   skip-test:
     description: "Set to true if building for deploy and tests passed in another step"
     required: false
@@ -24,15 +34,25 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Use Node.js ${{ inputs.node-version }}
-      uses: actions/setup-node@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        node-version: 18.x
+        node-version: ${{ inputs.node-version }}
         cache: 'yarn'
         always-auth: true
         registry-url: 'https://registry.npmjs.org'
+      if: "${{ inputs.node-version-file == '' }}"
 
-    - name: Setup .yarnrc.yml
+    - name: Setup Node.js using .nvmrc
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ${{ inputs.node-version-file }}
+        cache: 'yarn'
+        always-auth: true
+        registry-url: 'https://registry.npmjs.org'
+      if: "${{ inputs.node-version-file != '' }}"
+
+    - name: Grant access to GasBuddy packages
       shell: bash
       run: |
         yarn config set npmScopes.gasbuddy.npmRegistryServer "https://registry.npmjs.org"
@@ -42,21 +62,26 @@ runs:
       env:
         NPM_AUTH_TOKEN: ${{inputs.npm-token}}
 
-    - run: yarn install --immutable
+    - name: Install packages
+      run: yarn install --immutable
       shell: bash
 
-    - run: yarn ci-setup
+    - name: Setup CI environment
+      run: yarn ci-setup
       shell: bash
       if: ${{ inputs.ci-setup == 'true' }}
 
-    - run: yarn build
+    - name: Build code
+      run: yarn build
       shell: bash
 
-    - run: yarn lint
+    - name: Verify code formatting
+      run: yarn lint
       shell: bash
       if: ${{ inputs.skip-lint != 'true' }}
 
-    - run: yarn test
+    - name: Run tests
+      run: yarn test
       shell: bash
       if: ${{ inputs.skip-test != 'true' }}
       env:
