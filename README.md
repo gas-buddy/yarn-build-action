@@ -6,9 +6,9 @@ This Github Action runs the boilerplate to build and test a node project. It han
 
 | Option Key | Required | Default |
 |------------|----------|---------|
+| npm-token | yes | |
 | node-version | no  | 18.x    |
 | node-version-file | no | "" |
-| npm-token | yes | |
 | skip-test | no | "false" |
 | skip-lint | no | "false" |
 | ci-setup | no | "false" |
